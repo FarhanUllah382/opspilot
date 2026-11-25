@@ -1,0 +1,15 @@
+{
+  "incident_id": 12,
+  "status": "awaiting_approval",
+  "signal": {"service": "payments", "anomaly_score": 0.91, "window_start": "2026-11-25T20:14:00Z"},
+  "ml_hint": {"label": "redis_timeout", "probability": 0.84},
+  "triage": {"service": "payments", "severity": "high", "type": "latency"},
+  "evidence": [
+    {"id": "E1", "tool": "get_slow_traces", "summary": "4.8 s spent in redis GET"},
+    {"id": "E2", "tool": "search_logs", "summary": "340 x 'Redis timeout' in payments"}
+  ],
+  "root_cause": {"component": "redis", "explanation": "Redis is slow, so payments, orders and gateway wait on it.", "evidence_ids": ["E1", "E2"], "confidence": "high"},
+  "proposal": {"action": "restart_container", "target": "redis", "reason": "Runbook: Redis connection issues", "risk": "low", "idempotency_key": "incident-12:restart_container:redis"},
+  "approval": {"status": "pending", "by": null, "at": null, "reason": null},
+  "verification": null
+}
