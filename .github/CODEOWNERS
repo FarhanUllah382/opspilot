@@ -1,0 +1,24 @@
+# Each path is reviewed by its owner. Replace @PERSON_A, @PERSON_B, @PERSON_C
+# with your teammates' GitHub usernames once they accept the invitation.
+
+*                       @FarhanUllah382
+
+# Person A: AI core
+/opspilot-ai/agents/    @FarhanUllah382
+/opspilot-ai/rag/       @FarhanUllah382
+/mcp-servers/           @FarhanUllah382
+
+# Person B: ML and evaluation
+/opspilot-ai/ml/        @FarhanUllah382
+/chaos/                 @FarhanUllah382
+/evals/                 @FarhanUllah382
+
+# Person C: platform
+/shoplite/              @FarhanUllah382
+/observability/         @FarhanUllah382
+/opspilot-api/          @FarhanUllah382
+/dashboard/             @FarhanUllah382
+/.github/               @FarhanUllah382
+
+# Shared contracts: everyone
+/contracts/             @FarhanUllah382
