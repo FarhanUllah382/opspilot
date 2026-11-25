@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  safety:
+    name: Safety checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail if a .env file is committed
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$'; then
+            echo "A .env file is committed. Remove it and use .env.example instead."
+            exit 1
+          fi
+
+  python:
+    name: Python lint and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install tools
+        run: pip install ruff pytest
+      - name: Lint
+        run: ruff check .
+      - name: Tests
+        run: |
+          if ls -R | grep -q '^test_.*\.py$'; then
+            pytest -q
+          else
+            echo "No Python tests yet."
+          fi
+
+  node:
+    name: TypeScript lint and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Test every package that has a package.json
+        run: |
+          found=0
+          for pkg in $(git ls-files '*package.json' | grep -v node_modules); do
+            dir=$(dirname "$pkg"); found=1
+            echo "== $dir =="
+            (cd "$dir" && npm ci && npm run lint --if-present && npm test --if-present)
+          done
+          [ "$found" = 1 ] || echo "No Node packages yet."
